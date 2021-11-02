@@ -1,0 +1,61 @@
+#You can indicate which profile is the active by property spring.profiles.active=dev
+#or, throught the same property in Run Configurations -> Environments -> Environment variables.
+
+spring:
+ profiles:
+  active: dev
+  
+---
+#Tomcat
+#server.tomcat.connection-timeout=1200000   
+server:
+ port: 8000
+ tomcat:
+  connection-timeout: 1200000
+  
+#DataBase
+#If you do not define the property spring.profiles.active then, the first profile defined is the default.
+#spring.h2.console.enabled=true   
+spring:
+ profiles: dev
+ h2:
+  console:
+   enabled: true
+   path: /h2-console
+
+spring.jpa.hibernate.ddl-auto: none
+   
+#spring.datasource.url=jdbc:h2:mem:testdb
+spring.datasource:
+ url: jdbc:h2:mem:testdb  
+# username: sa
+# password: password
+# driverClassName: org.h2.Driver
+# jpa:
+#  spring.jpa.database-platform: org.hibernate.dialect.H2Dialect
+
+#This is using HATEOAS along with the REST repository. Because we have repositories, we automatically ge this data service
+#that exposes raw data repositories as services.
+spring.data.rest.base-path: api/rest
+
+#Actuator
+#Application status only up if dependencies are up
+management.endpoints.web.exposure.include: "*"
+management.endpoint.health.roles: USER
+management.endpoint.health.show-details: when_authorized
+
+#Logging
+#logging.level.org.springframework.jdbc.datasource.init.ScriptUtils=debug
+logging:
+  level:
+   com.example: DEBUG
+   org.springframework.jdbc.datasource.init.ScriptUtils: DEBUG
+   
+---
+
+spring:
+ profiles: test
+server:
+ port: 9000
+ tomcat:
+  connection-timeout: 1200000
